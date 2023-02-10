@@ -1,0 +1,73 @@
+          NETFLIX
+        -----------
+
+npx create-react-app netflix
+delete app.test.js, setup,logo files, clear app.css, clear contents of header in app.js
+paste api.text in src of netflix
+create new file called request.js
+copy the contents except urls from api.txt and paste in request.js and export it (export default requests)
+open terminal-> npm i axios
+create new file instance.js
+instance.js -> import axios in instance.js // import axios from "axios";
+instance.js -> //create instance             
+              const instance = axios.create({
+              baseURL: "https://api.themoviedb.org/3"
+              })
+-export instance inorder to get in another components // export default instance
+create folder for components
+components -> file -> Rows.js -> rfce
+app.js -> import Rows from './components/Rows';
+app.js -> after header -> <Rows/>  (self closing tag)
+app.js -> import requests -> import requests from './request';
+app.js -> <Rows title="Trending in India"
+          fetchUrl={requests.fetchTrending}      // {} is a variable
+          />
+
+Rows.js -> function Rows({title,fetchUrl}){
+            return (
+            <div> <h2> {title} </h2> </div> 
+            )}
+           
+Row.js -> import instance from '../instance'
+
+import React, { useState, useEffect } from 'react'      //import useState 
+import instance from '../instance'
+function Rows({ title, fetchUrl }) {
+const [movies, setMovies] = useState([])                //define useState
+async function fetchMovies() {
+    const request = await instance.get(fetchUrl)        //since we have created instance for request using axios it can direct fetch result.
+    setMovies(request.data.results); }
+    console.log(movies);
+
+  useEffect(() => {
+    fetchMovies()
+  }, [])
+
+
+  return (
+  <div><h2> {title} </h2></div>
+  )}
+
+export default Rows
+ 
+ 
+paste const base_url = "https://image.tmdb.org/t/p/original/"; after useState definition
+
+
+<div>
+        {
+          movies.map((movie) => (
+            <img src={`${base_url}${movie.backdrop_path}`}
+            alt={movie.name} />
+          ))
+        }
+</div>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+movie api- https://www.themoviedb.org/documentation/api
